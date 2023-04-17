@@ -4,6 +4,8 @@ const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 
 const createadmin = async (req, res) => {
+ if(req.user.data.usertype==='admin')
+ {
   try {
     const { name, email, password } = req.body;
 
@@ -24,10 +26,9 @@ const createadmin = async (req, res) => {
       });
 
       // remove the password field from the newAdmin object
-      const { password: omit, ...admin } = newAdmin.get();
-
+      const { password: omit,...admin } = newAdmin.get();
       // generate a JWT token for the new admin
-      const token = await generateToken(newAdmin.adminId);
+      const token = await generateToken(admin);
 
       return res.status(200).json(ResponseManager.successResponse({
         admin: admin,
@@ -37,6 +38,11 @@ const createadmin = async (req, res) => {
   } catch (error) {
     return res.status(500).json(ResponseManager.errorResponse());
   }
+}
+else
+{
+  return res.status(403).json(ResponseManager.errorResponse("Only Admin have this Authority",403));
+}
 };
 //login admin
 const loginadmin = async (req, res) => {
@@ -60,7 +66,8 @@ const loginadmin = async (req, res) => {
       }
   
       // generate a JWT token for the authenticated admin
-      const token = await generateToken(admin.adminId);
+      const {password:omit,...newdata}=admin.get()
+      const token = await generateToken(newdata);
   
       return res.status(200).json(ResponseManager.successResponse({ token }, 'Logged in successfully'));
     } catch (error) {

@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('mysql://root:adminadmin@localhost:3306/digischool');
-
+const sequelize = new Sequelize("mysql://root:adminadmin@localhost:3306/digischool");
 const Admin = sequelize.define('Admin', {
     adminId: {
       type: DataTypes.INTEGER,
@@ -19,14 +18,12 @@ const Admin = sequelize.define('Admin', {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    usertype: {
+      type: DataTypes.STRING,
+      defaultValue:"admin",
+      allowNull:true
     }
   });
   sequelize.sync()
-  .then(() => {
-    console.log('Admin Schema created!');
-  })
-  .catch((error) => {
-    console.log('Admin Schema failed!');   
-});
-  
   module.exports = Admin;
