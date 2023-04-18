@@ -1,5 +1,6 @@
 const ResponseManager = require("../helpers/Message");
 const Admin = require("../models/admin");
+const School=require("../models/school")
 const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 
@@ -74,6 +75,5 @@ const loginadmin = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
-  
-
+ 
 module.exports = { createadmin,loginadmin };

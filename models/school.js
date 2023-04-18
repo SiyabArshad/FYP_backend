@@ -2,6 +2,8 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize("mysql://root:adminadmin@localhost:3306/digischool");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const { encryptText, compareText } = require("../helpers/encrptions");
+
 const School = sequelize.define('School', {
     schoolId: {
       type: DataTypes.INTEGER,
@@ -45,7 +47,7 @@ const School = sequelize.define('School', {
       afterCreate: async (school) => {
         // Generate an auto-generated code and encrypt it using bcrypt
         const code = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a random 6-digit code
-        const hashedCode = await bcrypt.hash(code, 10); // Hash the code using bcrypt with a salt factor of 10
+        const hashedCode =await encryptText(code)// Hash the code using bcrypt with a salt factor of 10
         school.code = hashedCode;
         
         // Send the decrypted code to the school's email
@@ -69,6 +71,7 @@ const School = sequelize.define('School', {
             console.log(`Email sent: ${info.response}`);
           }
         });
+        await school.save();
       }
     }
   });
