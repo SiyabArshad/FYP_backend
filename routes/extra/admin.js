@@ -1,7 +1,7 @@
 const route=require("express").Router()
-const routesname=require("../helpers/routes")
-const {createadmin,loginadmin}=require("../controllers/admin")
-const {authenticate}=require("../middlewares/Authentication.js")
+const routesname=require("../../helpers/routes")
+const {createadmin,loginadmin}=require("../../controllers/admin")
+const {authenticate}=require("../../middlewares/Authentication.js")
 //login admin route
 route.post(routesname.adminlogin,loginadmin)
 

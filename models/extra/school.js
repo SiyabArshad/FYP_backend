@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize("mysql://root:adminadmin@localhost:3306/digischool");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const { encryptText, compareText } = require("../helpers/encrptions");
+const { encryptText, compareText } = require("../../helpers/encrptions");
 
 const School = sequelize.define('School', {
     schoolId: {

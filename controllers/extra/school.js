@@ -1,6 +1,6 @@
 const School=require("../models/school")
-const ResponseManager = require("../helpers/Message");
-const { encryptText, compareText } = require("../helpers/encrptions");
+const ResponseManager = require("../../helpers/Message");
+const { encryptText, compareText } = require("../../helpers/encrptions");
 
 const createSchool=async(req,res)=>{
     if(req.user.data.usertype==='admin')
