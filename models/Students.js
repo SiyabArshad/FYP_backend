@@ -17,7 +17,7 @@ const Students=sequelize.define("students",{
         type:DataTypes.STRING,
     }
 })
-Users.hasOne(Students, { foreignKey: 'userId' }); 
+//Users.hasOne(Students, { foreignKey: 'userId' }); 
 Students.belongsTo(Users, { foreignKey: 'userId' }); 
 
 sequelize.sync()
