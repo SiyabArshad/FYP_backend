@@ -17,8 +17,7 @@ const Students=sequelize.define("students",{
         type:DataTypes.STRING,
     }
 })
-//Users.hasOne(Students, { foreignKey: 'userId' }); 
-Students.belongsTo(Users, { foreignKey: 'userId' }); 
+Students.belongsTo(Users, { foreignKey: 'userId' ,foreignKeyConstraint: true }); 
 
 sequelize.sync()
 module.exports = Students;

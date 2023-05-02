@@ -1,0 +1,9 @@
+amin user
+siyabarshadsatti@gmail.com
+123456
+teacher user
+siyabsatti99@gmail.com
+123456
+student user
+siyabarshadsatti99@gmail.com
+123456

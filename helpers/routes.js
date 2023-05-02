@@ -1,14 +1,14 @@
 const routesname={
     //routes of our application
     //students routes
-    getallstudents:"/digischool/students",
-    getspecificstudent:"/digischool/student",
-    createstudent:"/digischool/createstudent",
-    deletestudent:"/digischool/deletestudent",
-    updatestudent:"/digischool/updatestudent",
+    getallstudents:"/digischool/students",//created api admin can acess it
+    getspecificstudent:"/digischool/student",//created api admin and student can acess it
+    createstudent:"/digischool/createstudent",//created api admin can acess it
+    deletestudent:"/digischool/deletestudent",//created api admin can acess it
+    updatestudent:"/digischool/updatestudent",//created api admin and student can acess it
     //teachers route
-    getallteachers:"/digischool/teachers",
-    getspecificteacher:"/digischool/teacherprofile",//craeted api teacher and admin can get profile
+    getallteachers:"/digischool/teachers",//created api admin can acess it
+    getspecificteacher:"/digischool/teacherprofile",//created api teacher and admin can get profile
     createteacher:"/digischool/createteacher",//created api only admin can create the teachers
     deleteteacher:"/digischool/deleteteacher",//craeted api only admin can delete teachers
     updateteacher:"/digischool/updateteacher",//created api only admin and Teacher can Update

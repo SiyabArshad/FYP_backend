@@ -1,9 +1,9 @@
 const route=require("express").Router()
 const routesname=require("../helpers/routes")
 const {authenticate}=require("../middlewares/Authentication.js")
-const {CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile}=require("../controllers/teachers")
+const {CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile,getTeachers}=require("../controllers/teachers")
 
-// route.post(routesname.signuproute,authenticate,CreateUser)
+route.get(routesname.getallteachers,authenticate,getTeachers)
 route.delete(routesname.deleteteacher,authenticate,deleteTeacher)
 route.get(routesname.getspecificteacher,authenticate,TeacherProfile)
 route.put(routesname.updateteacher,authenticate,updateTeacherprofile)

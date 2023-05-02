@@ -1,12 +1,13 @@
 const Users=require("../models/Users")
 const Admins=require("../models/Admins")
 const Teachers=require("../models/Teachers")
+const Students =require("../models/Students")
 const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
 const { mailusers } = require("../helpers/senEmail");
-//create user route Teacher only admin can do this
-const CreateTeacher=async(req,res)=>{
+//create user route Student only admin can do this
+const CreateStudent=async(req,res)=>{
     if(req?.user?.data?.admin)
     {
      const { email, password,profile,name, phone, address } = req.body;
@@ -18,9 +19,9 @@ const CreateTeacher=async(req,res)=>{
        } else {
            const newPass=await encryptText(password)
            const user = await Users.create({ email, password:newPass,role:"teacher",profile});
-           const tteachers = await Teachers.create({ name, phone, address, userId: user.id });
+           const tteachers = await Students.create({ name, phone, address, userId: user.id });
            await mailusers(email,"Account Password",`Here is your Temporary Passowrd Login with this Password ${password} and Email ${email} and Update Your Password.`)
-           return res.status(200).json(ResponseManager.successResponse({},"Teacher Has Been Created SucessFully")) 
+           return res.status(200).json(ResponseManager.successResponse({},"Student Has Been Created SucessFully")) 
        }
      } catch (error) {
            return res.status(500).json(ResponseManager.errorResponse());
@@ -31,9 +32,9 @@ const CreateTeacher=async(req,res)=>{
      return res.status(500).json(ResponseManager.errorResponse("only Admin can Perform This Action",500));
     }
  }
-//update admin profile
-const updateTeacherprofile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
+//update Student profile
+const updateStudentprofile = async (req, res) => {
+    if(req?.user?.data?.admin||req?.user?.data?.role==="student")
      {
     try {
       const userId = req.body.id;
@@ -47,12 +48,12 @@ const updateTeacherprofile = async (req, res) => {
           .json(ResponseManager.errorResponse("User not found", 400));
       }
   
-      // Update the Teacher profile
-      const tea = await Teachers.findOne({ where: { userId } });
+      // Update the Student profile
+      const tea = await Students.findOne({ where: { userId } });
       if (!tea) {
         return res
           .status(400)
-          .json(ResponseManager.errorResponse("Teacher not found", 400));
+          .json(ResponseManager.errorResponse("Student not found", 400));
       }
   
       tea.name = name;
@@ -60,7 +61,7 @@ const updateTeacherprofile = async (req, res) => {
       tea.phone = phone;
       await tea.save();
   
-      return res.status(200).json(ResponseManager.successResponse({}, "Teacher profile updated successfully"));
+      return res.status(200).json(ResponseManager.successResponse({}, "Student profile updated successfully"));
     } catch (error) {
       console.log(error);
       return res.status(500).json(ResponseManager.errorResponse());
@@ -71,8 +72,8 @@ const updateTeacherprofile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse("only Admin or Teacher can Perform This Action",500));
      }
   };
-//delete a teacher admin accesss
-const deleteTeacher = async (req, res) => {
+//delete a Student admin accesss
+const deleteStudent = async (req, res) => {
     if (req?.user?.data?.admin) {
       try {
         
@@ -85,17 +86,17 @@ const deleteTeacher = async (req, res) => {
             .json(ResponseManager.errorResponse("User not found", 400));
         }
         
-        // Update the Teacher profile
-        const tea = await Teachers.findOne({ where: { userId } });
+        // Update the Student profile
+        const tea = await Students.findOne({ where: { userId } });
         if (!tea) {
           return res
             .status(400)
-            .json(ResponseManager.errorResponse("Teacher not found", 400));
+            .json(ResponseManager.errorResponse("Student not found", 400));
         }
     
         await user.destroy()
         await tea.destroy()
-        return res.status(200).json(ResponseManager.successResponse({}, "Teacher deleted successfully"));
+        return res.status(200).json(ResponseManager.successResponse({}, "Student deleted successfully"));
       } catch (error) {
         console.log(error);
         return res.status(500).json(ResponseManager.errorResponse());
@@ -104,9 +105,9 @@ const deleteTeacher = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse("Only Admin can perform this action", 500));
     }
   };
-  //admin profile
-const TeacherProfile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
+  //Student profile
+const StudentProfile = async (req, res) => {
+    if(req?.user?.data?.admin||req?.user?.data?.role==="student")
      {
     const userId = req.body.id;
     const userEmail = req.user.data.email;
@@ -115,9 +116,9 @@ const TeacherProfile = async (req, res) => {
       if (!user) {
         return res.status(404).json(ResponseManager.errorResponse("User not found.", 404));
       }
-      const admin = await Teachers.findOne({ where: { userId: userId } });
+      const admin = await Students.findOne({ where: { userId: userId } });
       if (!admin) {
-        return res.status(404).json(ResponseManager.errorResponse("Teacher not found.", 404));
+        return res.status(404).json(ResponseManager.errorResponse("Student not found.", 404));
       }
       const userProfile = {
         email: userEmail,
@@ -137,9 +138,9 @@ const TeacherProfile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse("only Admin can Perform This Action",500));
      }
   };
-  //getting teachers pagination 
-  const getTeachers = async (req, res) => {
-    if (!req?.user?.data?.admin) {
+  //getting Students pagination 
+  const getStudents = async (req, res) => {
+    if (!req?.user?.data?.admin&&req?.user?.data?.role!=="teacher") {
       return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
     }
     
@@ -149,7 +150,7 @@ const TeacherProfile = async (req, res) => {
     const offset = (page - 1) * limit;
   
     try {
-      const teachers = await Teachers.findAndCountAll({
+      const teachers = await Students.findAndCountAll({
         offset,
         limit,
         include: {
@@ -178,4 +179,4 @@ const TeacherProfile = async (req, res) => {
     }
   };
   
- module.exports={CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile,getTeachers}
+ module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile}
