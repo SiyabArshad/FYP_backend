@@ -17,7 +17,6 @@ const Admins=sequelize.define("admins",{
         type:DataTypes.STRING,
     }
 })
-//Users.hasOne(Admins, { foreignKey: 'userId', foreignKeyConstraint: true }); 
 Admins.belongsTo(Users, { foreignKey: 'userId', foreignKeyConstraint: true }); 
 
 sequelize.sync()

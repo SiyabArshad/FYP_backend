@@ -1,10 +1,4 @@
 const routesname={
-    adminlogin:"/admin/loginadmin",
-    createadmin:"/admin/createadmin",
-    createschool:"/admin/createschool",
-    disableschool:"/admin/disableschool",
-    getallschool:"/admin/schools",
-    getschool:"/school/getschool",
     //routes of our application
     //students routes
     getallstudents:"/digischool/students",
@@ -14,10 +8,10 @@ const routesname={
     updatestudent:"/digischool/updatestudent",
     //teachers route
     getallteachers:"/digischool/teachers",
-    getspecificteacher:"/digischool/teacher",
-    createteacher:"/digischool/createteacher",
-    deleteteacher:"/digischool/deleteteacher",
-    updateteacher:"/digischool/updateteacher",
+    getspecificteacher:"/digischool/teacherprofile",//craeted api teacher and admin can get profile
+    createteacher:"/digischool/createteacher",//created api only admin can create the teachers
+    deleteteacher:"/digischool/deleteteacher",//craeted api only admin can delete teachers
+    updateteacher:"/digischool/updateteacher",//created api only admin and Teacher can Update
     //classes routes
     getallclasses:"/digischool/classes",
     getspecificclass:"/digischool/class",
@@ -53,7 +47,7 @@ const routesname={
     signuproute:"/digischool/createuser",//api created and only admin can create it
     getprofile:"/digischool/adminprofile",//api created and * access
     updateprofile:"/digischool/updateadminprofile",//api created and admin access
-    resetUser:"/digischool/reset"
+    resetUser:"/digischool/reset"//api created every one can update its account
 }
 
 
