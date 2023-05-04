@@ -5,7 +5,7 @@ const {CreateStudent,updateStudentprofile,deleteStudent,StudentProfile,getStuden
 
 route.get(routesname.getallstudents,authenticate,getStudents)
 route.delete(routesname.deletestudent,authenticate,deleteStudent)
-route.get(routesname.getprofile,authenticate,StudentProfile)
+route.get(routesname.getspecificstudent,authenticate,StudentProfile)
 route.put(routesname.updatestudent,authenticate,updateStudentprofile)
 route.post(routesname.createstudent,authenticate,CreateStudent)
 module.exports=route

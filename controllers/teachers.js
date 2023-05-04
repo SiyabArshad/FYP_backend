@@ -33,10 +33,10 @@ const CreateTeacher=async(req,res)=>{
  }
 //update admin profile
 const updateTeacherprofile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
+    if(req?.user?.data?.role==="teacher")
      {
     try {
-      const userId = req.body.id;
+      const userId = req.user?.data?.id;
       const { name, address, phone } = req.body;
   
       // Update the user profile
@@ -68,7 +68,7 @@ const updateTeacherprofile = async (req, res) => {
   }
   else
      {
-      return res.status(500).json(ResponseManager.errorResponse("only Admin or Teacher can Perform This Action",500));
+      return res.status(500).json(ResponseManager.errorResponse("only Owner can Perform This Action",500));
      }
   };
 //delete a teacher admin accesss
@@ -76,7 +76,7 @@ const deleteTeacher = async (req, res) => {
     if (req?.user?.data?.admin) {
       try {
         
-        const userId = req.body.id;
+        const userId = req.body.id||req.query.id;
         // Update the user profile
         const user = await Users.findByPk(userId);
         if (!user) {
@@ -106,9 +106,9 @@ const deleteTeacher = async (req, res) => {
   };
   //admin profile
 const TeacherProfile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
+    if(req?.user?.data?.role==="teacher")
      {
-    const userId = req.body.id;
+    const userId = req.user.data.id;
     const userEmail = req.user.data.email;
     try {
       const user = await Users.findByPk(userId);
@@ -134,10 +134,10 @@ const TeacherProfile = async (req, res) => {
   }
   else
      {
-      return res.status(500).json(ResponseManager.errorResponse("only Admin can Perform This Action",500));
+      return res.status(500).json(ResponseManager.errorResponse("only Account Owner can Perform This Action",500));
      }
   };
-  //getting teachers pagination 
+  //get teachers pagination
   const getTeachers = async (req, res) => {
     if (!req?.user?.data?.admin) {
       return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
@@ -162,8 +162,8 @@ const TeacherProfile = async (req, res) => {
       return res.status(200).json(ResponseManager.successResponse({
         teachers: teachers.rows.map((teacher) => ({
           name: teacher.name,
-          email: teacher.User.email,
-          profilePic: teacher.User.profile,
+          email: teacher.User?.email, // Add null check here
+          profilePic: teacher.User?.profile, // Add null check here
           phone: teacher.phone,
           address: teacher.address,
         })),
@@ -177,5 +177,5 @@ const TeacherProfile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
-  
+
  module.exports={CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile,getTeachers}

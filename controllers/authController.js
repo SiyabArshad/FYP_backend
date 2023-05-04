@@ -130,8 +130,7 @@ else
 const resetUser = async (req, res) => {
   try {
     const { email, password, profile } = req.body;
-    const userId = req.user.id;
-
+    const userId = req.user.data.id;
     const user = await Users.findByPk(userId);
     if (!user) {
       return res

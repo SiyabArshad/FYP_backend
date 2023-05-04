@@ -1,17 +1,17 @@
 const routesname={
     //routes of our application
-    //students routes
+    //students Routes Tested Routes All Cleared
     getallstudents:"/digischool/students",//created api admin can acess it
-    getspecificstudent:"/digischool/student",//created api admin and student can acess it
-    createstudent:"/digischool/createstudent",//created api admin can acess it
+    getspecificstudent:"/digischool/student",//created api student can acess it
+    createstudent:"/digischool/createstudent",//created api admin and Teacher can acess it
     deletestudent:"/digischool/deletestudent",//created api admin can acess it
-    updatestudent:"/digischool/updatestudent",//created api admin and student can acess it
-    //teachers route
+    updatestudent:"/digischool/updatestudent",//created api student can acess it
+    //teachers Routes Tested Routes All Cleared
     getallteachers:"/digischool/teachers",//created api admin can acess it
-    getspecificteacher:"/digischool/teacherprofile",//created api teacher and admin can get profile
+    getspecificteacher:"/digischool/teacherprofile",//created api teacher can get profile
     createteacher:"/digischool/createteacher",//created api only admin can create the teachers
     deleteteacher:"/digischool/deleteteacher",//craeted api only admin can delete teachers
-    updateteacher:"/digischool/updateteacher",//created api only admin and Teacher can Update
+    updateteacher:"/digischool/updateteacher",//created api only Teacher can Update
     //classes routes
     getallclasses:"/digischool/classes",
     getspecificclass:"/digischool/class",
@@ -42,7 +42,7 @@ const routesname={
     createtransaction:"/digischool/createtransaction",
     deletetransaction:"/digischool/deletetransaction",
     updatetransaction:"/digischool/updatetransaction",
-    //Authentication Routes
+    //Authentication+Admin Routes Tested Routes All Cleared
     loginroute:"/digischool/login",//api created and * access
     signuproute:"/digischool/createuser",//api created and only admin can create it
     getprofile:"/digischool/adminprofile",//api created and * access

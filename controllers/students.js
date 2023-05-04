@@ -8,7 +8,7 @@ const ResponseManager = require("../helpers/Message");
 const { mailusers } = require("../helpers/senEmail");
 //create user route Student only admin can do this
 const CreateStudent=async(req,res)=>{
-    if(req?.user?.data?.admin)
+    if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
     {
      const { email, password,profile,name, phone, address } = req.body;
      try {
@@ -29,12 +29,12 @@ const CreateStudent=async(req,res)=>{
     }
     else
     {
-     return res.status(500).json(ResponseManager.errorResponse("only Admin can Perform This Action",500));
+     return res.status(500).json(ResponseManager.errorResponse("only Admin and Teachers can Perform This Action",500));
     }
  }
 //update Student profile
 const updateStudentprofile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="student")
+    if(req?.user?.data?.role==="student")
      {
     try {
       const userId = req.body.id;
@@ -69,7 +69,7 @@ const updateStudentprofile = async (req, res) => {
   }
   else
      {
-      return res.status(500).json(ResponseManager.errorResponse("only Admin or Teacher can Perform This Action",500));
+      return res.status(500).json(ResponseManager.errorResponse("only Student can Perform This Action",500));
      }
   };
 //delete a Student admin accesss
@@ -77,7 +77,7 @@ const deleteStudent = async (req, res) => {
     if (req?.user?.data?.admin) {
       try {
         
-        const userId = req.body.id;
+        const userId = req.body.id||req.query.id;
         // Update the user profile
         const user = await Users.findByPk(userId);
         if (!user) {
@@ -107,9 +107,9 @@ const deleteStudent = async (req, res) => {
   };
   //Student profile
 const StudentProfile = async (req, res) => {
-    if(req?.user?.data?.admin||req?.user?.data?.role==="student")
+    if(req?.user?.data?.role==="student")
      {
-    const userId = req.body.id;
+    const userId = req.user.data.id;
     const userEmail = req.user.data.email;
     try {
       const user = await Users.findByPk(userId);
@@ -135,12 +135,12 @@ const StudentProfile = async (req, res) => {
   }
   else
      {
-      return res.status(500).json(ResponseManager.errorResponse("only Admin can Perform This Action",500));
+      return res.status(500).json(ResponseManager.errorResponse("only Student can Perform This Action",500));
      }
   };
   //getting Students pagination 
   const getStudents = async (req, res) => {
-    if (!req?.user?.data?.admin&&req?.user?.data?.role!=="teacher") {
+    if (!req?.user?.data?.admin && req?.user?.data?.role !== "teacher") {
       return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
     }
     
@@ -150,7 +150,7 @@ const StudentProfile = async (req, res) => {
     const offset = (page - 1) * limit;
   
     try {
-      const teachers = await Students.findAndCountAll({
+      const students = await Students.findAndCountAll({
         offset,
         limit,
         include: {
@@ -161,22 +161,22 @@ const StudentProfile = async (req, res) => {
       });
   
       return res.status(200).json(ResponseManager.successResponse({
-        teachers: teachers.rows.map((teacher) => ({
-          name: teacher.name,
-          email: teacher.User.email,
-          profilePic: teacher.User.profile,
-          phone: teacher.phone,
-          address: teacher.address,
+        students: students.rows.map((student) => ({
+          name: student.name,
+          email: student.User?.email,
+          profilePic: student.User?.profile,
+          phone: student.phone,
+          address: student.address,
         })),
-        total: teachers.count,
+        total: students.count,
         limit,
         page,
-        pages: Math.ceil(teachers.count / limit),
+        pages: Math.ceil(students.count / limit),
       }));
     } catch (error) {
       console.error(error);
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
-  
+
  module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile}
