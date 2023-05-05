@@ -12,12 +12,12 @@ const routesname={
     createteacher:"/digischool/createteacher",//created api only admin can create the teachers
     deleteteacher:"/digischool/deleteteacher",//craeted api only admin can delete teachers
     updateteacher:"/digischool/updateteacher",//created api only Teacher can Update
-    //classes routes
-    getallclasses:"/digischool/classes",
-    getspecificclass:"/digischool/class",
-    createclass:"/digischool/createclass",
-    deleteclass:"/digischool/deleteclass",
-    updateclass:"/digischool/updateclass",
+    //classes Routes Tested Routes All Cleared
+    getallclasses:"/digischool/teachers/classes",//operation can be performed by  Teacher 
+    getspecificclass:"/digischool/class",//operation can be performed by  Teacher 
+    createclass:"/digischool/createclass",//operation can be performed by  Teacher 
+    deleteclass:"/digischool/deleteclass",//operation can be performed by  Teacher 
+    updateclass:"/digischool/updateclass",//operation can be performed by  Teacher 
     //enrollment(admisisons) routes
     getenrollmentofaclass:"/digischool/enrollment",
     getspecificenrollment:"/digischool/enrollment/student",

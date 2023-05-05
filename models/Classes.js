@@ -16,7 +16,6 @@ const Classes=sequelize.define("classes",{
         defaultValue:"Alpha"
     },
 })
-Teachers.hasMany(Classes, { foreignKey: 'teacherId' }); 
-Classes.belongsTo(Teachers, { foreignKey: 'teacherId' });
+Classes.belongsTo(Teachers, { foreignKey: 'teacherId',foreignKeyConstraint: true });
 sequelize.sync()
 module.exports = Classes;
