@@ -36,12 +36,11 @@ const routesname={
     createattendance:"/digischool/createattendance",
     deleteattendance:"/digischool/deleteattendance",
     updateattendance:"/digischool/updateattendance",
-    //Accounts Routes
-    gettransactionsdetail:"/digischool/gettransactions",
-    getspecifictransactionsdetailofadate:"/digischool/transactions",
-    createtransaction:"/digischool/createtransaction",
-    deletetransaction:"/digischool/deletetransaction",
-    updatetransaction:"/digischool/updatetransaction",
+    //Accounts Statement Routes Tested Routes All Cleared
+    gettransactionsdetail:"/digischool/gettransactions",//adminops
+    getspecifictransactionsdetailofadate:"/digischool/financial/progress",//admin acess
+    createtransaction:"/digischool/createtransaction",//admin ops
+    deletetransaction:"/digischool/deletetransaction",//admin ops
     //Authentication+Admin Routes Tested Routes All Cleared
     loginroute:"/digischool/login",//api created and * access
     signuproute:"/digischool/createuser",//api created and only admin can create it
