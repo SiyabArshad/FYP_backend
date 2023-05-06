@@ -31,7 +31,7 @@ const routesname={
     updateresult:"/digischool/updateresult",//only teacher have acess
     //Attendance Routes
     getattendanceofdate:"/digischool/getattendance",
-    getspecificstudentattendanceofadate:"/digischool/attendance/student",
+    getspecificstudentattendanceofadate:"/digischool/attendance/date",
     createattendance:"/digischool/createattendance",
     deleteattendance:"/digischool/deleteattendance",
     updateattendance:"/digischool/updateattendance",

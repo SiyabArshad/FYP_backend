@@ -1,0 +1,10 @@
+const route=require("express").Router()
+const routesname=require("../helpers/routes")
+const {authenticate}=require("../middlewares/Authentication.js")
+const {createAttendance,updateAttendance,deleteAttendance,getAllAttendance,getAttendanceByDate}=require("../controllers/attendance")
+route.get(routesname.getattendanceofdate,authenticate,getAllAttendance)
+route.get(routesname.getspecificstudentattendanceofadate,authenticate,getAttendanceByDate)
+route.delete(routesname.deleteattendance,authenticate,deleteAttendance)
+route.put(routesname.updateattendance,authenticate,updateAttendance)
+route.post(routesname.createattendance,authenticate,createAttendance)
+module.exports=route

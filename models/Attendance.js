@@ -16,7 +16,6 @@ const Attendances=sequelize.define("attendances",{
         allowNull: false
       }
 })
-Enrollments.hasMany(Attendances, { foreignKey: 'enrollmentId' }); 
-Attendances.belongsTo(Enrollments, { foreignKey: 'enrollmentId' });
+Attendances.belongsTo(Enrollments, { foreignKey: 'enrollmentId',foreignKeyConstraint:true });
 sequelize.sync()
 module.exports = Attendances;

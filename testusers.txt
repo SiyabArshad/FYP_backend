@@ -7,3 +7,6 @@ siyabsatti99@gmail.com
 student user
 siyabarshadsatti99@gmail.com
 123456
+
+//install mysql mysql some sort of gui if you dont cmd
+//install node
