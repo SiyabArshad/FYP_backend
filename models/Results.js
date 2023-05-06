@@ -10,18 +10,20 @@ const Results=sequelize.define("results",{
       subject: {
         type: DataTypes.STRING,
       },
-      marks: {
+      obtainedmarks: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      totalmarks: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
       grade: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
       }
 })
 
-Enrollments.hasMany(Results, { foreignKey: 'enrollmentId' }); 
-Results.belongsTo(Enrollments, { foreignKey: 'enrollmentId' });
+Results.belongsTo(Enrollments, { foreignKey: 'enrollmentId',foreignKeyConstraint: true  });
 
 sequelize.sync()
 module.exports = Results;

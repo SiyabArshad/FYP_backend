@@ -24,12 +24,11 @@ const routesname={
     createenrollment:"/digischool/createenrollment",//only teacher have acess
     deleteenrollment:"/digischool/deleteenrollment",//only teacher have acess
     updateenrollment:"/digischool/updateenrollment",//only teacher have acess
-    //Results routes
-    getresultofaclass:"/digischool/getresult",
-    getspecificstudentresult:"/digischool/result/student",
-    createresult:"/digischool/createresult",
-    deleteresult:"/digischool/deleteresult",
-    updateresult:"/digischool/updateresult",
+    //Results Routes Tested Routes All Cleared
+    getresultofaclass:"/digischool/getresult",//only teacher and student have acess
+    createresult:"/digischool/createresult",//only teacher have acess
+    deleteresult:"/digischool/deleteresult",//only teacher have acess
+    updateresult:"/digischool/updateresult",//only teacher have acess
     //Attendance Routes
     getattendanceofdate:"/digischool/getattendance",
     getspecificstudentattendanceofadate:"/digischool/attendance/student",

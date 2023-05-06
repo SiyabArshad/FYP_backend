@@ -63,7 +63,7 @@ const DeleteEnrollment = async(req, res) => {
         if (!targetClass) {
           return res.status(400).json(ResponseManager.errorResponse("Enrollment not found", 400));
         }
-        await Enrollments.destroy({ where: { id: enrollmentId } });
+        await targetClass.destroy();
         return res.status(200).json(ResponseManager.successResponse({}, "Enrollment Has Been Deleted Successfully"));
   
       } catch (error) {
