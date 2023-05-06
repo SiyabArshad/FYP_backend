@@ -14,12 +14,10 @@ const Enrollments=sequelize.define("enrollments",{
       }
 })
 // Define the many-to-one relationship between Enrollment and Class
-Enrollments.belongsTo(Classes, { foreignKey: 'classId' }); // Each enrollment belongs to one class
-Classes.hasMany(Enrollments, { foreignKey: 'classId' }); // Each class can have multiple enrollments
+Enrollments.belongsTo(Classes, { foreignKey: 'classId' ,foreignKeyConstraint: true }); // Each enrollment belongs to one class
 
 // Define the many-to-one relationship between Enrollment and Student
-Enrollments.belongsTo(Students, { foreignKey: 'studentId' }); // Each enrollment belongs to one student
-Students.hasMany(Enrollments, { foreignKey: 'studentId' }); // Each student can have multiple enrollments
+Enrollments.belongsTo(Students, { foreignKey: 'studentId',foreignKeyConstraint: true  }); // Each enrollment belongs to one student
 
 sequelize.sync()
 module.exports = Enrollments;

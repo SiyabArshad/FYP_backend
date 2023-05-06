@@ -1,0 +1,10 @@
+const route=require("express").Router()
+const routesname=require("../helpers/routes")
+const {authenticate}=require("../middlewares/Authentication.js")
+const {CreateEnrollment,UpdateEnrollmentStatus,DeleteEnrollment,GetAllEnrollments,GetEnrollmentsByStudentId}=require("../controllers/enrollment")
+route.get(routesname.getenrollmentofaclass,authenticate,GetAllEnrollments)
+route.delete(routesname.deleteenrollment,authenticate,DeleteEnrollment)
+route.get(routesname.getspecificenrollment,authenticate,GetEnrollmentsByStudentId)
+route.put(routesname.updateenrollment,authenticate,UpdateEnrollmentStatus)
+route.post(routesname.createenrollment,authenticate,CreateEnrollment)
+module.exports=route

@@ -18,12 +18,12 @@ const routesname={
     createclass:"/digischool/createclass",//operation can be performed by  Teacher 
     deleteclass:"/digischool/deleteclass",//operation can be performed by  Teacher 
     updateclass:"/digischool/updateclass",//operation can be performed by  Teacher 
-    //enrollment(admisisons) routes
-    getenrollmentofaclass:"/digischool/enrollment",
-    getspecificenrollment:"/digischool/enrollment/student",
-    createenrollment:"/digischool/createenrollment",
-    deleteenrollment:"/digischool/deleteenrollment",
-    updateenrollment:"/digischool/updateenrollment",
+    //enrollment(admisisons) Routes Tested Routes All Cleared
+    getenrollmentofaclass:"/digischool/enrollment",//only teacher have acess
+    getspecificenrollment:"/digischool/enrollment/student",//only Student have acess
+    createenrollment:"/digischool/createenrollment",//only teacher have acess
+    deleteenrollment:"/digischool/deleteenrollment",//only teacher have acess
+    updateenrollment:"/digischool/updateenrollment",//only teacher have acess
     //Results routes
     getresultofaclass:"/digischool/getresult",
     getspecificstudentresult:"/digischool/result/student",
