@@ -1,5 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize("mysql://root:adminadmin@localhost:3306/digischool");
+const sequelize = new Sequelize( "digischool", "admin", "adminadmin", {
+  host:  "digischool.cwgh8sist0pd.eu-north-1.rds.amazonaws.com",
+  dialect: 'mysql',
+});
 const nodemailer = require('nodemailer');
 const Users=sequelize.define("users",{
     id:{

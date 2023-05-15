@@ -8,5 +8,6 @@ student user
 siyabarshadsatti99@gmail.com
 123456
 
+run mysql query in your work bench first then deploy
 //install mysql mysql some sort of gui if you dont cmd
 //install node
