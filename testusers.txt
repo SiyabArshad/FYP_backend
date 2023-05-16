@@ -10,3 +10,10 @@ siyabarshadsatti99@gmail.com
 
 //install mysql mysql some sort of gui if you dont cmd
 //install node
+# PORT=5000
+# SECKEY=FHJDSKJFDASUIOF8ASIFDU0O9DFK90E90UEOIPD
+# DATABASE=mysql://root:adminadmin@localhost:3306/digischool
+# HOST=localhost
+# USER_NAME=root
+# DB_PASSWORD=adminadmin
+# DB_NAME=digischool
