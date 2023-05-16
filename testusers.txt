@@ -17,3 +17,11 @@ siyabarshadsatti99@gmail.com
 # USER_NAME=root
 # DB_PASSWORD=adminadmin
 # DB_NAME=digischool
+
+# PORT=5000
+# SECKEY=FHJDSKJFDASUIOF8ASIFDU0O9DFK90E90UEOIPD
+# DATABASE=jdbc:mysql://sql10.freesqldatabase.com:3306/sql10618473
+# HOST=digischool.cwgh8sist0pd.eu-north-1.rds.amazonaws.com
+# USER_NAME=admin
+# DB_PASSWORD=adminadmin
+# DB_NAME=digischool
