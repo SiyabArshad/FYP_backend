@@ -3,6 +3,7 @@
 const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
+const {mailusers}=require("../helpers/senEmail")
 //create user route admin
 const CreateUser=async(req,res)=>{
    if(req?.user?.data?.admin)
@@ -18,7 +19,7 @@ const CreateUser=async(req,res)=>{
           const user = await Users.create({ email, password:newPass,admin,role,profile});
           const admint = await Admins.create({ name, phone, address, userId: user.id });
           return res.status(200).json(ResponseManager.successResponse({},"User Created SucessFully"))
-    
+        
       }
     } catch (error) {
           return res.status(500).json(ResponseManager.errorResponse());
@@ -53,6 +54,24 @@ const loginUser = async (req, res) => {
     return res.status(500).json(ResponseManager.errorResponse());
   }
 };
+//password link controllers
+const PasswordLinkSend = async (req, res) => {
+  const { email} = req.body;
+  try {
+    const user = await Users.findOne({ where: { email: email } });
+    if (!user) {
+      return res
+        .status(404)
+        .json(ResponseManager.errorResponse("User not found", 404));
+    } else {
+        const token = generateToken({ id: user.id, email: user.email,admin:user.admin,role:user.role });
+        await mailusers(email,"Account Password Recovery",`Here is your Passowrd Reset Link.`,`<a href=${process.env.PASSURL}${token}>Confirm Your Account</a>`)
+        return res.status(200).json(ResponseManager.successResponse({},"Password Recovery Mail sent")) 
+      }
+  } catch (error) {
+    return res.status(500).json(ResponseManager.errorResponse());
+  }
+};
 //admin profile
 const AdminProfile = async (req, res) => {
   if(req?.user?.data?.admin)
@@ -73,7 +92,8 @@ const AdminProfile = async (req, res) => {
       name: admin.name,
       phone: admin.phone,
       address: admin.address,
-      profile:user.profile
+      profile:user.profile,
+      id:admin.id
     };
     return res.status(200).json(ResponseManager.successResponse(userProfile));
   } catch (error) {
@@ -165,4 +185,4 @@ const resetUser = async (req, res) => {
   }
 };
 //exports
-module.exports={CreateUser,loginUser,AdminProfile,updateadminprofile,resetUser}
+module.exports={CreateUser,loginUser,AdminProfile,updateadminprofile,resetUser,PasswordLinkSend}

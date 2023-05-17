@@ -106,9 +106,10 @@ const GetAllEnrollments = async (req, res) => {
 //get all enrollment of particular student but whose status true
 const GetEnrollmentsByStudentId = async (req, res) => {
     if (req?.user?.data?.role === "student") {
+      const {id}=req.query||req.body||req.params
       try {
         const enrollments = await Enrollments.findAll({
-          where: { studentId: req.user.data.id, status: true },
+          where: { studentId: id, status: true },
           include: {
             model: Classes,
             attributes: ['section', 'classname'] // You can select the specific attributes you want to include from the Class model.

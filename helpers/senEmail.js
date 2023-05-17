@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
- const mailusers=async(useremail,subject,body)=>{
+ const mailusers=async(useremail,subject,body,html)=>{
     try{
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -13,7 +13,8 @@ const nodemailer = require('nodemailer');
           from: 'Shaheerkhan4525@gmail.com',
           to: useremail,
           subject: subject,
-          text: body
+          text: body,
+          html:html
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {

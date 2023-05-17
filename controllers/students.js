@@ -125,7 +125,8 @@ const StudentProfile = async (req, res) => {
         name: admin.name,
         phone: admin.phone,
         address: admin.address,
-        profile:user.profile
+        profile:user.profile,
+        id:admin.id
       };
       return res.status(200).json(ResponseManager.successResponse(userProfile));
     } catch (error) {

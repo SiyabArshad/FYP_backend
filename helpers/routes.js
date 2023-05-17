@@ -45,7 +45,8 @@ const routesname={
     signuproute:"/digischool/createuser",//api created and only admin can create it
     getprofile:"/digischool/adminprofile",//api created and * access
     updateprofile:"/digischool/updateadminprofile",//api created and admin access
-    resetUser:"/digischool/reset"//api created every one can update its account
+    resetUser:"/digischool/reset"//api created every one can update its account,
+    ,passlink:"/digischool/passlink"
 }
 
 
