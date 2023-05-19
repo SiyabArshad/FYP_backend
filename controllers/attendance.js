@@ -84,7 +84,8 @@ const deleteAttendance = async (req, res) => {
 };
 //get all attendance of enrollment id and percentage
 const getAllAttendance = async (req, res) => {
-    const { enrollmentId } = req.body || req.query;
+    const { enrollmentId } = req.query||req.body
+    console.log(enrollmentId)
     try {
       // Check if the enrollment exists
       const enrollment = await Enrollments.findOne({ where: { id: enrollmentId } });
