@@ -37,8 +37,8 @@ const updateStudentprofile = async (req, res) => {
     if(req?.user?.data?.role==="student")
      {
     try {
-      const userId = req.body.id;
-      const { name, address, phone } = req.body;
+      const userId = req.user.data.id;
+      const { name,profile } = req.body;
   
       // Update the user profile
       const user = await Users.findByPk(userId);
@@ -55,10 +55,11 @@ const updateStudentprofile = async (req, res) => {
           .status(400)
           .json(ResponseManager.errorResponse("Student not found", 400));
       }
-  
       tea.name = name;
-      tea.address = address;
-      tea.phone = phone;
+      if(profile)
+      {
+        tea.profile=profile
+      }
       await tea.save();
   
       return res.status(200).json(ResponseManager.successResponse({}, "Student profile updated successfully"));
