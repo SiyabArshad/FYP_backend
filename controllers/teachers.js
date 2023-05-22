@@ -37,7 +37,7 @@ const updateTeacherprofile = async (req, res) => {
      {
     try {
       const userId = req.user?.data?.id;
-      const { name, address, phone } = req.body;
+      const { name, address, phone,profile } = req.body;
   
       // Update the user profile
       const user = await Users.findByPk(userId);
@@ -54,12 +54,15 @@ const updateTeacherprofile = async (req, res) => {
           .status(400)
           .json(ResponseManager.errorResponse("Teacher not found", 400));
       }
-  
+      if(profile)
+      {
+        user.profile=profile
+      }
       tea.name = name;
       tea.address = address;
       tea.phone = phone;
       await tea.save();
-  
+      await user.save()
       return res.status(200).json(ResponseManager.successResponse({}, "Teacher profile updated successfully"));
     } catch (error) {
       console.log(error);

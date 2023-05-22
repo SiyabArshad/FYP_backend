@@ -33,12 +33,13 @@ const CreateStudent=async(req,res)=>{
     }
  }
 //update Student profile
+
 const updateStudentprofile = async (req, res) => {
     if(req?.user?.data?.role==="student")
      {
     try {
       const userId = req.user.data.id;
-      const { name,profile } = req.body;
+      const { name,profile } = req.body||req.query;
   
       // Update the user profile
       const user = await Users.findByPk(userId);
@@ -58,8 +59,9 @@ const updateStudentprofile = async (req, res) => {
       tea.name = name;
       if(profile)
       {
-        tea.profile=profile
+        user.profile=profile
       }
+      await user.save()
       await tea.save();
   
       return res.status(200).json(ResponseManager.successResponse({}, "Student profile updated successfully"));

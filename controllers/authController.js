@@ -112,7 +112,7 @@ const updateadminprofile = async (req, res) => {
    {
   try {
     const userId = req.user.data.id;
-    const { name, address, phone } = req.body;
+    const { name, address, phone,profile } = req.body;
 
     // Update the user profile
     const user = await Users.findByPk(userId);
@@ -129,11 +129,15 @@ const updateadminprofile = async (req, res) => {
         .status(400)
         .json(ResponseManager.errorResponse("Admin not found", 400));
     }
-
+    if(profile)
+    {
+      user.profile=profile
+    }
     admin.name = name;
     admin.address = address;
     admin.phone = phone;
     await admin.save();
+    await user.save();
 
     return res.status(200).json(ResponseManager.successResponse({}, "Admin profile updated successfully"));
   } catch (error) {

@@ -13,7 +13,9 @@ const results=require("./routes/results")
 const attendance=require("./routes/attendance")
 require("dotenv").config()
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin:"*"
+}))
 connectin()
 app.use(express.json())
 app.use("/uetcs/",auth)
