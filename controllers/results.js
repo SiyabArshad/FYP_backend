@@ -110,7 +110,7 @@ const deleteResult = async (req, res) => {
   //get all results of a student 
   const GetResultsByEnrolmentId = async (req, res) => {
     if (req?.user?.data?.role === "teacher"||req?.user?.data?.role === "student") {
-    const { enrollmentId } = req.body;
+    const { enrollmentId } = req.query;
     try {
       const results = await Results.findAll({
         where: {
