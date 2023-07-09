@@ -11,30 +11,34 @@ const Accounts=sequelize.define("accounts",{
         type: DataTypes.DATEONLY,
         allowNull: false
       },
-      total_expense: {
+      stationary_spending: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0
       },
-      total_earning: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0
-      },
+      
       fee_received: {
         type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
         defaultValue: 0
       },
       bill_paid: {
         type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
         defaultValue: 0
       },
-      stationary_spending: {
+      stationary_earning: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
+      others: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0
       },
       salaries_paid: {
         type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
         defaultValue: 0
       },
 })

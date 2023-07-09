@@ -1,6 +1,7 @@
 const express=require("express")
 const app=express()
 const cors=require("cors")
+const bodyParser = require("body-parser");
 const server=require("http").createServer(app)
 const connectin =require("./helpers/connection")
 const auth=require("./routes/auth")
@@ -18,6 +19,7 @@ app.use(cors({
 }))
 connectin()
 app.use(express.json())
+app.use(bodyParser.json());
 app.use("/uetcs/",auth)
 app.use("/uetcs/",teacahers)
 app.use("/uetcs/",students)

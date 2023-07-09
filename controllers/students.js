@@ -10,7 +10,7 @@ const { mailusers } = require("../helpers/senEmail");
 const CreateStudent=async(req,res)=>{
     if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
     {
-     const { email, password,profile,name, phone, address } = req.body;
+     const { email, password,profile,name, phone, address,fathername,rollno } = req.body;
      try {
        const alreadyexist=await Users.findOne({where:{email:email}})
        if (alreadyexist) {
@@ -19,7 +19,7 @@ const CreateStudent=async(req,res)=>{
        } else {
            const newPass=await encryptText(password)
            const user = await Users.create({ email, password:newPass,role:"teacher",profile});
-           const tteachers = await Students.create({ name, phone, address, userId: user.id });
+           const tteachers = await Students.create({ name, phone, address, userId: user.id,rollno,fathername });
            await mailusers(email,"Account Password",`Here is your Temporary Passowrd Login with this Password ${password} and Email ${email} and Update Your Password.`)
            return res.status(200).json(ResponseManager.successResponse({},"Student Has Been Created SucessFully")) 
        }
@@ -50,7 +50,7 @@ const updateStudentprofile = async (req, res) => {
       }
   
       // Update the Student profile
-      const tea = await Students.findOne({ where: { userId } });
+      const tea = await Students.findOne({ where: { userId:user?.id } });
       if (!tea) {
         return res
           .status(400)
@@ -90,7 +90,7 @@ const deleteStudent = async (req, res) => {
         }
         
         // Update the Student profile
-        const tea = await Students.findOne({ where: { userId } });
+        const tea = await Students.findOne({ where: { userId:user?.id } });
         if (!tea) {
           return res
             .status(400)
@@ -119,7 +119,7 @@ const StudentProfile = async (req, res) => {
       if (!user) {
         return res.status(404).json(ResponseManager.errorResponse("User not found.", 404));
       }
-      const admin = await Students.findOne({ where: { userId: userId } });
+      const admin = await Students.findOne({ where: {userId:user?.id } });
       if (!admin) {
         return res.status(404).json(ResponseManager.errorResponse("Student not found.", 404));
       }
@@ -129,7 +129,9 @@ const StudentProfile = async (req, res) => {
         phone: admin.phone,
         address: admin.address,
         profile:user.profile,
-        id:admin.id
+        id:admin.id,
+        rollno:admin.rollno,
+        fathername:admin.fathername
       };
       return res.status(200).json(ResponseManager.successResponse(userProfile));
     } catch (error) {

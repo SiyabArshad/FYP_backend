@@ -10,31 +10,31 @@ const Accounts=require("../models/Accounts")
 const { Sequelize, DataTypes,Op } = require('sequelize');
 const createOrUpdateAccountRecord = async (req, res) => {
     if (req?.user?.data?.role === "admin") {
-      const { date, total_expense, total_earning, fee_received, bill_paid, stationary_spending, salaries_paid } = req.body;
+      const { date, stationary_spending,  fee_received, bill_paid, stationary_earning, salaries_paid,others } = req.body;
   
       try {
         // Check if record for this month already exists
         const existingRecord = await Accounts.findOne({ where: Sequelize.where(Sequelize.fn("MONTH", Sequelize.col("date")), "=", new Date(date).getMonth() + 1) });
         if (existingRecord) {
           // Update existing record
-          existingRecord.total_expense = total_expense;
-          existingRecord.total_earning = total_earning;
+          existingRecord.stationary_spending = stationary_spending;
           existingRecord.fee_received = fee_received;
           existingRecord.bill_paid = bill_paid;
-          existingRecord.stationary_spending = stationary_spending;
+          existingRecord.stationary_earning = stationary_earning;
           existingRecord.salaries_paid = salaries_paid;
+          existingRecord.others=others
           await existingRecord.save();
           return res.status(200).json(ResponseManager.successResponse({}, "Record updated successfully."));
         } else {
           // Create new record
           await Accounts.create({
             date,
-            total_expense,
-            total_earning,
+            stationary_spending,
             fee_received,
             bill_paid,
-            stationary_spending,
+            stationary_earning,
             salaries_paid,
+            others
           });
           return res.status(200).json(ResponseManager.successResponse({}, "Record created successfully."));
         }
@@ -139,6 +139,7 @@ const getAccountsByTimeFrame = async (req, res) => {
       },
     });
 
+    
     // Calculate total expenses and earnings for the date range
     const { totalExpense, totalEarning } = calculateTotal(accounts);
 
@@ -156,8 +157,9 @@ function calculateTotal(accounts) {
   let totalEarning = 0;
 
   accounts.forEach(account => {
-    totalExpense += account.total_expense;
-    totalEarning += account.total_earning;
+    const {stationary_spending,  fee_received, bill_paid, stationary_earning, salaries_paid,others}=account
+    totalExpense += stationary_spending+bill_paid+salaries_paid+others;
+    totalEarning += fee_received+stationary_earning;
   });
 
   return { totalExpense, totalEarning };

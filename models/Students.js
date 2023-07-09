@@ -10,6 +10,12 @@ const Students=sequelize.define("students",{
     name:{
         type:DataTypes.STRING,
     },
+    fathername:{
+        type:DataTypes.STRING,
+    },
+    rollno:{
+        type:DataTypes.STRING,
+    },
     phone:{
         type:DataTypes.STRING,
     },

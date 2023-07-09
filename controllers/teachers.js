@@ -38,17 +38,19 @@ const updateTeacherprofile = async (req, res) => {
     try {
       const userId = req.user?.data?.id;
       const { name, address, phone,profile } = req.body;
-  
       // Update the user profile
       const user = await Users.findByPk(userId);
+      // console.log("backend ",user)
       if (!user) {
         return res
           .status(400)
           .json(ResponseManager.errorResponse("User not found", 400));
       }
-  
+      console.log(user?.id)
       // Update the Teacher profile
-      const tea = await Teachers.findOne({ where: { userId } });
+      // const tea = await Teachers.findOne({ where: { userId:user?.id} });
+   
+      const tea= await Teachers.findOne({ userId:user?.id});
       if (!tea) {
         return res
           .status(400)
@@ -89,7 +91,7 @@ const deleteTeacher = async (req, res) => {
         }
         
         // Update the Teacher profile
-        const tea = await Teachers.findOne({ where: { userId } });
+        const tea = await Teachers.findOne({ userId:user?.id} );
         if (!tea) {
           return res
             .status(400)
@@ -118,7 +120,7 @@ const TeacherProfile = async (req, res) => {
       if (!user) {
         return res.status(404).json(ResponseManager.errorResponse("User not found.", 404));
       }
-      const admin = await Teachers.findOne({ where: { userId: userId } });
+      const admin = await Teachers.findOne({ userId:user?.id});
       if (!admin) {
         return res.status(404).json(ResponseManager.errorResponse("Teacher not found.", 404));
       }

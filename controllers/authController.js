@@ -18,6 +18,8 @@ const CreateUser=async(req,res)=>{
           const newPass=await encryptText(password)
           const user = await Users.create({ email, password:newPass,admin,role,profile});
           const admint = await Admins.create({ name, phone, address, userId: user.id });
+          await mailusers(email,`Hi ${name} Welcome to Digi School Family Here is your Password ${password} Kindly change it as soon as possible Account Type ${role}. `,`<h1>Welcome</h1>`)
+
           return res.status(200).json(ResponseManager.successResponse({},"User Created SucessFully"))
         
       }
@@ -43,7 +45,7 @@ const loginUser = async (req, res) => {
       const isMatched = await compareText(password, user.password);
       if (isMatched) {
         const token = generateToken({ id: user.id, email: user.email,admin:user.admin,role:user.role });
-        return res.status(200).json(ResponseManager.successResponse({ token },"Logged in Sucessfully",200));
+        return res.status(200).json(ResponseManager.successResponse({ token,role:user.role,admin:user.admin },"Logged in Sucessfully",200));
       } else {
         return res
           .status(403)
@@ -83,7 +85,7 @@ const AdminProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json(ResponseManager.errorResponse("User not found.", 404));
     }
-    const admin = await Admins.findOne({ where: { userId: userId } });
+    const admin = await Admins.findOne({ where: { userId: user?.id } });
     if (!admin) {
       return res.status(404).json(ResponseManager.errorResponse("Admin not found.", 404));
     }
@@ -113,7 +115,6 @@ const updateadminprofile = async (req, res) => {
   try {
     const userId = req.user.data.id;
     const { name, address, phone,profile } = req.body;
-
     // Update the user profile
     const user = await Users.findByPk(userId);
     if (!user) {
@@ -123,7 +124,7 @@ const updateadminprofile = async (req, res) => {
     }
 
     // Update the admin profile
-    const admin = await Admins.findOne({ where: { userId } });
+    const admin = await Admins.findOne({ where: { userId:user?.id } });
     if (!admin) {
       return res
         .status(400)
