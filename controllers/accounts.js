@@ -100,8 +100,8 @@ const deleteStatement = async (req, res) => {
   };
 //ACCOUNTS TIME FRAME API
 const getAccountsByTimeFrame = async (req, res) => {
-  const { timeframe } = req.body||req.query;
-
+   const { timeframe } = req.body||req.query;
+  // const timeframe="6 months"
   // Check if timeframe is provided
   if (!timeframe) {
     return res.status(400).json(ResponseManager.errorResponse("Timeframe is required."));
@@ -153,16 +153,118 @@ const getAccountsByTimeFrame = async (req, res) => {
 //extar calcultaions
 
 function calculateTotal(accounts) {
-  let totalExpense = 0;
-  let totalEarning = 0;
+  let totalExpense = Number(0);
+  let totalEarning = Number(0);
 
   accounts.forEach(account => {
     const {stationary_spending,  fee_received, bill_paid, stationary_earning, salaries_paid,others}=account
-    totalExpense += stationary_spending+bill_paid+salaries_paid+others;
-    totalEarning += fee_received+stationary_earning;
+    totalExpense += Number(stationary_spending)+Number(bill_paid)+Number(salaries_paid)+Number(others);
+    totalEarning += Number(fee_received)+Number(stationary_earning);
   });
 
   return { totalExpense, totalEarning };
 }
 
-  module.exports={createOrUpdateAccountRecord,deleteStatement,getAllAccounts,getAccountsByTimeFrame}
+const lastMonthExpense = async (req, res) => {
+  if (req?.user?.data?.role === "admin") {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    
+    try {
+      // Calculate the previous month's date range
+      const previousMonth = currentMonth - 1 > 0 ? currentMonth - 1 : 12;
+      const previousYear = currentMonth - 1 > 0 ? currentYear : currentYear - 1;
+      const previousMonthStartDate = new Date(`${previousYear}-${previousMonth}-01`);
+      const previousMonthEndDate = new Date(`${currentYear}-${currentMonth}-01`);
+      previousMonthEndDate.setDate(previousMonthEndDate.getDate() - 1);
+
+      // Query the database to retrieve the total expenses for the previous month
+      const totalExpenses = await Accounts.findOne({
+        attributes: [
+          [Sequelize.fn('SUM', Sequelize.col('stationary_spending')), 'stationary_spending'],
+          [Sequelize.fn('SUM', Sequelize.col('bill_paid')), 'bill_paid'],
+          [Sequelize.fn('SUM', Sequelize.col('salaries_paid')), 'salaries_paid'],
+          [Sequelize.fn('SUM', Sequelize.col('others')), 'others']
+        ],
+        where: {
+          date: {
+            [Sequelize.Op.between]: [previousMonthStartDate, previousMonthEndDate]
+          }
+        }
+      });
+      const exp=Number(totalExpenses?.others)+Number(totalExpenses?.bill_paid)+Number(totalExpenses?.salaries_paid)+Number(totalExpenses?.stationary_spending)
+      return res.status(200).json(ResponseManager.successResponse(exp, "Total expenses of the previous month."));
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json(ResponseManager.errorResponse());
+    }
+  } else {
+    return res.status(500).json(ResponseManager.errorResponse("Only admin can perform this action.", 500));
+  }
+};
+
+
+
+//monthly data
+const getAccountsByMonthlyTimeFrame = async (req, res) => {
+  // const { months } = req.query||req.headers;
+  const months=6
+  // Check if months parameter is provided
+  if (!months) {
+    return res.status(400).json(ResponseManager.errorResponse("Months parameter is required."));
+  }
+
+  try {
+    const currentDate = new Date();
+    const dateRange = calculateDateRange(months, currentDate);
+
+    // Query accounts table for records within the date range
+    const accounts = await Accounts.findAll({
+      where: {
+        date: {
+          [Op.between]: [dateRange.startDate, dateRange.endDate],
+        },
+      },
+    });
+
+    // Calculate total expenses and earnings for the date range
+    const monthlyData = calculateMonthlyData(accounts);
+
+    return res
+      .status(200)
+      .json(ResponseManager.successResponse(monthlyData, "Accounts data retrieved successfully."));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(ResponseManager.errorResponse());
+  }
+};
+
+// Calculate date range based on months input
+function calculateDateRange(months, currentDate) {
+  const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - months + 1, 1);
+  const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+  return { startDate, endDate };
+}
+
+// Calculate total expenses and earnings for each month
+function calculateMonthlyData(accounts) {
+  const monthlyData = [];
+
+  for (let i = 0; i < accounts.length; i++) {
+    const account = accounts[i];
+    const { date, stationary_spending, fee_received, bill_paid, stationary_earning, salaries_paid, others } = account;
+
+    const month = date.toLocaleString('default', { month: 'long' });
+    const totalExpense = Number(stationary_spending) + Number(bill_paid) + Number(salaries_paid) + Number(others);
+    const totalEarning = Number(fee_received) + Number(stationary_earning);
+
+    monthlyData.push({ month, totalExpense, totalEarning });
+  }
+
+  return monthlyData;
+}
+
+
+  module.exports={createOrUpdateAccountRecord,deleteStatement,getAllAccounts,getAccountsByTimeFrame,lastMonthExpense,getAccountsByMonthlyTimeFrame}

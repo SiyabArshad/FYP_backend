@@ -6,12 +6,14 @@ const routesname={
     createstudent:"/digischool/createstudent",//created api admin and Teacher can acess it
     deletestudent:"/digischool/deletestudent",//created api admin can acess it
     updatestudent:"/digischool/updatestudent",//created api student can acess it
+    studentcount:"/digischool/studentcount",
     //teachers Routes Tested Routes All Cleared
     getallteachers:"/digischool/teachers",//created api admin can acess it
     getspecificteacher:"/digischool/teacherprofile",//created api teacher can get profile
     createteacher:"/digischool/createteacher",//created api only admin can create the teachers
     deleteteacher:"/digischool/deleteteacher",//craeted api only admin can delete teachers
     updateteacher:"/digischool/updateteacher",//created api only Teacher can Update
+    taechercount:"/digischool/teachercount",
     //classes Routes Tested Routes All Cleared
     getallclasses:"/digischool/teachers/classes",//operation can be performed by  Teacher 
     getspecificclass:"/digischool/class",//operation can be performed by  Teacher 
@@ -40,6 +42,7 @@ const routesname={
     getspecifictransactionsdetailofadate:"/digischool/financial/progress",//admin acess
     createtransaction:"/digischool/createtransaction",//admin ops
     deletetransaction:"/digischool/deletetransaction",//admin ops
+    lastmonthexpense:"/digischool/lastmonthexpense",
     //Authentication+Admin Routes Tested Routes All Cleared
     loginroute:"/digischool/login",//api created and * access
     signuproute:"/digischool/createuser",//api created and only admin can create it

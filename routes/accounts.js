@@ -1,9 +1,10 @@
 const route=require("express").Router()
 const routesname=require("../helpers/routes")
 const {authenticate}=require("../middlewares/Authentication.js")
-const {createOrUpdateAccountRecord,deleteStatement,getAllAccounts,getAccountsByTimeFrame}=require("../controllers/accounts")
+const {createOrUpdateAccountRecord,deleteStatement,getAllAccounts,getAccountsByTimeFrame,lastMonthExpense,getAccountsByMonthlyTimeFrame}=require("../controllers/accounts")
 route.get(routesname.gettransactionsdetail,authenticate,getAllAccounts)
 route.delete(routesname.deletetransaction,authenticate,deleteStatement)
-route.get(routesname.getspecifictransactionsdetailofadate,authenticate,getAccountsByTimeFrame)
+route.get(routesname.getspecifictransactionsdetailofadate,authenticate,getAccountsByMonthlyTimeFrame)
 route.post(routesname.createtransaction,authenticate,createOrUpdateAccountRecord)
+route.get(routesname.lastmonthexpense,authenticate,lastMonthExpense)
 module.exports=route

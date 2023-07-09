@@ -184,5 +184,15 @@ const StudentProfile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
-
- module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile}
+  const getstudentcount=async(req,res)=>{
+    try{
+           const studentsc=await Students.count()
+           return res.status(200).json(ResponseManager.successResponse({count:studentsc}))   
+    }
+    catch{
+      console.error(error);
+      return res.status(500).json(ResponseManager.errorResponse());
+    
+    }
+  }
+ module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile,getstudentcount}
