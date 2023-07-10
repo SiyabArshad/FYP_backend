@@ -1,11 +1,11 @@
 const Users=require("../models/Users")
-const Admins=require("../models/Admins")
-const Teachers=require("../models/Teachers")
 const Students =require("../models/Students")
 const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
 const { mailusers } = require("../helpers/senEmail");
+const { Op } = require('sequelize');
+
 //create user route Student only admin can do this
 const CreateStudent=async(req,res)=>{
     if(req?.user?.data?.admin||req?.user?.data?.role==="teacher")
@@ -144,35 +144,47 @@ const StudentProfile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse("only Student can Perform This Action",500));
      }
   };
-  //getting Students pagination 
+
   const getStudents = async (req, res) => {
     if (!req?.user?.data?.admin && req?.user?.data?.role !== "teacher") {
       return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
     }
-    
+  
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    
+    const limit = parseInt(req.query.limit) || 2;
+    const searchText = req.query.searchText || '';
+  
     const offset = (page - 1) * limit;
   
     try {
+      let whereCondition = {};
+  
+      if (searchText !== '') {
+        whereCondition.name = {
+          [Op.like]: `%${searchText}%`
+        };
+      }
+  
       const students = await Students.findAndCountAll({
         offset,
         limit,
+        where: whereCondition,
         include: {
           model: Users,
-          attributes: ["email", "profile"],
+          attributes: ["email", "profile", "id"],
         },
-        attributes: ["name", "phone", "address"],
+        attributes: ["name", "phone", "address", "rollno"],
       });
-  
+      
       return res.status(200).json(ResponseManager.successResponse({
         students: students.rows.map((student) => ({
           name: student.name,
-          email: student.User?.email,
-          profilePic: student.User?.profile,
+          email: student.user?.dataValues.email,
+          profilePic: student.user?.dataValues.profile,
           phone: student.phone,
           address: student.address,
+          rollno: student.rollno,
+          id: student?.user?.dataValues.id
         })),
         total: students.count,
         limit,
@@ -184,6 +196,8 @@ const StudentProfile = async (req, res) => {
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
+  
+  //count api
   const getstudentcount=async(req,res)=>{
     try{
            const studentsc=await Students.count()

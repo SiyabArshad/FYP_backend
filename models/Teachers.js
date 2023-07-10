@@ -20,4 +20,10 @@ const Teachers=sequelize.define("teachers",{
 Teachers.belongsTo(Users, { foreignKey: 'userId',foreignKeyConstraint: true }); 
 
 sequelize.sync()
+.then(() => {
+    console.log('Database table created (or updated) successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to create database tables:', error);
+  });
 module.exports = Teachers;

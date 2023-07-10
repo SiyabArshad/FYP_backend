@@ -97,9 +97,8 @@ const deleteTeacher = async (req, res) => {
             .status(400)
             .json(ResponseManager.errorResponse("Teacher not found", 400));
         }
-    
-        await user.destroy()
         await tea.destroy()
+        await user.destroy()
         return res.status(200).json(ResponseManager.successResponse({}, "Teacher deleted successfully"));
       } catch (error) {
         console.log(error);
@@ -150,28 +149,38 @@ const TeacherProfile = async (req, res) => {
     }
     
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    
+    const limit = parseInt(req.query.limit) || 2;
+    const searchText = req.query.searchText || '';
     const offset = (page - 1) * limit;
   
     try {
+      let whereCondition = {};
+  
+      if (searchText !== '') {
+        whereCondition.name = {
+          [Op.like]: `%${searchText}%`
+        };
+      }
+
       const teachers = await Teachers.findAndCountAll({
         offset,
         limit,
+        where: whereCondition,
         include: {
           model: Users,
-          attributes: ["email", "profile"],
+          attributes: ["email", "profile","id"],
         },
         attributes: ["name", "phone", "address"],
       });
-  
+      
       return res.status(200).json(ResponseManager.successResponse({
         teachers: teachers.rows.map((teacher) => ({
           name: teacher.name,
-          email: teacher.User?.email, // Add null check here
-          profilePic: teacher.User?.profile, // Add null check here
+          email: teacher.user?.dataValues.email, // Add null check here
+          profilePic: teacher.user?.dataValues.profile, // Add null check here
           phone: teacher.phone,
           address: teacher.address,
+          id:teacher.user?.dataValues.id
         })),
         total: teachers.count,
         limit,

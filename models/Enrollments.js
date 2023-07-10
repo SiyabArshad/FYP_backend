@@ -20,4 +20,10 @@ Enrollments.belongsTo(Classes, { foreignKey: 'classId' ,foreignKeyConstraint: tr
 Enrollments.belongsTo(Students, { foreignKey: 'studentId',foreignKeyConstraint: true  }); // Each enrollment belongs to one student
 
 sequelize.sync()
+.then(() => {
+  console.log('Database table created (or updated) successfully.');
+})
+.catch((error) => {
+  console.error('Unable to create database tables:', error);
+});
 module.exports = Enrollments;

@@ -29,7 +29,10 @@ siyabarshadsatti99@gmail.com
 
 #students
 ahmedhassan@gmail.com
+johndoe@gmail.com
+johndoe2@gmail.com
 #admin
 siyabarshadsatti@gmail.com
 #teacher
 siyabarshadsatti99@gmail.com
+nouman@gmail.com
