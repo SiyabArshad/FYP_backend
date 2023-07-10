@@ -18,7 +18,7 @@ const CreateStudent=async(req,res)=>{
            
        } else {
            const newPass=await encryptText(password)
-           const user = await Users.create({ email, password:newPass,role:"teacher",profile});
+           const user = await Users.create({ email, password:newPass,role:"student",profile});
            const tteachers = await Students.create({ name, phone, address, userId: user.id,rollno,fathername });
            await mailusers(email,"Account Password",`Here is your Temporary Passowrd Login with this Password ${password} and Email ${email} and Update Your Password.`)
            return res.status(200).json(ResponseManager.successResponse({},"Student Has Been Created SucessFully")) 

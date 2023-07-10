@@ -25,3 +25,11 @@ siyabarshadsatti99@gmail.com
 # USER_NAME=admin
 # DB_PASSWORD=adminadmin
 # DB_NAME=digischool
+
+
+#students
+ahmedhassan@gmail.com
+#admin
+siyabarshadsatti@gmail.com
+#teacher
+siyabarshadsatti99@gmail.com

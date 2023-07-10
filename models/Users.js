@@ -22,7 +22,7 @@ const Users=sequelize.define("users",{
     },
     role:{
         type:DataTypes.ENUM('teacher','admin','student'),
-        defaultValue:"teacher"
+        defaultValue:"student"
     },
     profile:{
         type:DataTypes.STRING,
