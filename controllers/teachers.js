@@ -5,6 +5,8 @@ const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
 const { mailusers } = require("../helpers/senEmail");
+const { Op } = require('sequelize');
+
 //create user route Teacher only admin can do this
 const CreateTeacher=async(req,res)=>{
     if(req?.user?.data?.admin)
@@ -149,7 +151,7 @@ const TeacherProfile = async (req, res) => {
     }
     
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
+    const limit = parseInt(req.query.limit) || 3;
     const searchText = req.query.searchText || '';
     const offset = (page - 1) * limit;
   

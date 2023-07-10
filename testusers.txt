@@ -26,13 +26,20 @@ siyabarshadsatti99@gmail.com
 # DB_PASSWORD=adminadmin
 # DB_NAME=digischool
 
+all test user have same password 123456
 
 #students
 ahmedhassan@gmail.com
 johndoe@gmail.com
 johndoe2@gmail.com
+johndoe3@gmail.com
+johndoe4@gmail.com
+johndoe5@gmail.com
+
 #admin
 siyabarshadsatti@gmail.com
+
 #teacher
 siyabarshadsatti99@gmail.com
-nouman@gmail.com
+johnteacher@gmail.com
+johnteacher2@gmail.com
