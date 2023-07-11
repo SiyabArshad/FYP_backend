@@ -166,7 +166,7 @@ function calculateTotal(accounts) {
 }
 
 const lastMonthExpense = async (req, res) => {
-  if (req?.user?.data?.role === "admin") {
+  if (req?.user?.data?.role === "admin"||req?.user?.data?.role==="teacher") {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();

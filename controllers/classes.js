@@ -12,14 +12,11 @@ const CreateClass=async(req,res)=>{
     {
      const { classname,section } = req.body;
      try {
-       const alreadyexist=await Classes.findOne({where:{classname}})
-       if (alreadyexist) {
-           return res.status(400).json(ResponseManager.errorResponse("Classs Already Exist with this name.",400))
-       } else {
-           await Classes.create({classname,section,teacherId:req?.user?.data?.id});
+      const teacher=await Teachers.findOne({where:{userId:req?.user?.data?.id}}) 
+           await Classes.create({classname,section,teacherId:teacher?.id});
            return res.status(200).json(ResponseManager.successResponse({},"Class Has Been Created SucessFully")) 
-       }
      } catch (error) {
+      console.log(error)
            return res.status(500).json(ResponseManager.errorResponse());
      }
     }
