@@ -208,8 +208,8 @@ const lastMonthExpense = async (req, res) => {
 
 //monthly data
 const getAccountsByMonthlyTimeFrame = async (req, res) => {
-  // const { months } = req.query||req.headers;
-  const months=6
+  const { months } = req.query||req.headers;
+  // const months=6
   // Check if months parameter is provided
   if (!months) {
     return res.status(400).json(ResponseManager.errorResponse("Months parameter is required."));
