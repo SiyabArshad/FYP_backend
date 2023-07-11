@@ -22,7 +22,8 @@ const createAttendance = async (req, res) => {
         // Check if an attendance already exists for this enrollment on this date
         const attendance = await Attendance.findOne({ where: { enrollmentId, date } });
         if (attendance) {
-          return res.status(400).json(ResponseManager.errorResponse("Attendance already exists for this enrollment on this date If you want to add new delete it",400));
+          await Attendance.update({ status }, { where: { id: attendance.id } });
+          return res.status(200).json(ResponseManager.errorResponse("Attendance Updated",200));
         }
   
         // Create the attendance
@@ -131,9 +132,9 @@ const getAllAttendance = async (req, res) => {
   
 //get specific attendance
 const getAttendanceByDate = async (req, res) => {
-    const { enrollmentId, date } = req.body||req.query;
+    const { enrollmentId, date } = req.query;
     try {
-      // Check if the enrollment exists
+     // Check if the enrollment exists 
       const enrollment = await Enrollments.findOne({ where: { id: enrollmentId } });
       if (!enrollment) {
         return res.status(404).json(ResponseManager.errorResponse('Enrollment does not exist', 404));
@@ -150,14 +151,25 @@ const getAttendanceByDate = async (req, res) => {
       });
   
       if (!attendance) {
-        return res.status(404).json(ResponseManager.errorResponse('Attendance does not exist for this enrollment and date', 404));
+        return res.status(200).json(ResponseManager.errorResponse('Attendance does not exist for this enrollment and date'));
       }
   
-      return res.status(200).json(ResponseManager.successResponse({ attendance }, 'Attendance retrieved successfully'));
+      return res.status(200).json(ResponseManager.successResponse({ attendance },'Attendance retrieved successfully'));
     } catch (error) {
+      // console.log(error)
       return res.status(500).json(ResponseManager.errorResponse());
     }
   };
   
+  const getspecialattendnace=async(req,res)=>{
+    try{
+      console.log(req.query)
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
 
-module.exports={createAttendance,updateAttendance,deleteAttendance,getAllAttendance,getAttendanceByDate}
+  
+
+module.exports={createAttendance,updateAttendance,deleteAttendance,getAllAttendance,getAttendanceByDate,getspecialattendnace}
