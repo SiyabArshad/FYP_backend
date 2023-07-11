@@ -6,6 +6,8 @@ const Admins=require("../models/Admins")
 const Teachers=require("../models/Teachers")
 const Classes=require("../models/Classes")
 const Students=require("../models/Students")
+const Results=require("../models/Results")
+const Attendance=require("../models/Attendance")
 const CreateEnrollment=async(req,res)=>{
     if(req?.user?.data?.role==='teacher')
     {
@@ -88,7 +90,7 @@ const GetAllEnrollments = async (req, res) => {
             },
             {
               model: Students,
-              attributes: ['id', 'name', 'phone', 'address']
+              attributes: ['id', 'name', 'phone', 'address',"rollno"]
             }
           ]
         });

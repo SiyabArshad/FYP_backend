@@ -1,5 +1,6 @@
 const Users=require("../models/Users")
 const Students =require("../models/Students")
+const Enrollments=require("../models/Enrollments")
 const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
@@ -96,7 +97,14 @@ const deleteStudent = async (req, res) => {
             .status(400)
             .json(ResponseManager.errorResponse("Student not found", 400));
         }
-    
+
+        await Enrollments.destroy(
+          {
+            where:{
+              studentId:tea.id
+            }
+          }
+        )
         await user.destroy()
         await tea.destroy()
         return res.status(200).json(ResponseManager.successResponse({}, "Student deleted successfully"));
@@ -197,6 +205,23 @@ const StudentProfile = async (req, res) => {
     }
   };
   
+  //getstudents list
+  const getStudentslist = async (req, res) => {
+    if (!req?.user?.data?.admin && req?.user?.data?.role !== "teacher") {
+      return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
+    }
+  
+
+  
+    try {
+     const students=await Students.findAll()
+     return res.status(200).json(ResponseManager.successResponse({students},"students fetched"))
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json(ResponseManager.errorResponse());
+    }
+  };
+  
   //count api
   const getstudentcount=async(req,res)=>{
     try{
@@ -209,4 +234,4 @@ const StudentProfile = async (req, res) => {
     
     }
   }
- module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile,getstudentcount}
+ module.exports={CreateStudent,getStudents,updateStudentprofile,deleteStudent,StudentProfile,getstudentcount,getStudentslist}

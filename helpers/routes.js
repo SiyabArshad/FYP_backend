@@ -7,6 +7,7 @@ const routesname={
     deletestudent:"/digischool/deletestudent",//created api admin can acess it
     updatestudent:"/digischool/updatestudent",//created api student can acess it
     studentcount:"/digischool/studentcount",
+    studentlist:"/digischool/studentlist",
     //teachers Routes Tested Routes All Cleared
     getallteachers:"/digischool/teachers",//created api admin can acess it
     getspecificteacher:"/digischool/teacherprofile",//created api teacher can get profile

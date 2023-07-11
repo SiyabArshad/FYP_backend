@@ -100,10 +100,11 @@ const DeleteClass = async(req, res) => {
   }  
   //get all classes associated with the teacher
   const GetallClass = async(req, res) => {
-    const teacherId = req.user.data.id;
+    const Id = req.user.data.id;
     try {
+      const teacherId=await Teachers.findOne({where:{userId:Id}})
       const teacherClasses = await Classes.findAll({
-        where: { teacherId }
+        where: { teacherId:teacherId.id }
       });
       return res.status(200).json(ResponseManager.successResponse(teacherClasses, "Teacher's Classes"));
   
