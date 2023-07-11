@@ -205,4 +205,22 @@ const TeacherProfile = async (req, res) => {
     
     }
   }
- module.exports={CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile,getTeachers,getteachercount}
+  //getTeacherslist
+  const getTeacherslist = async (req, res) => {
+    if (!req?.user?.data?.admin ) {
+      return res.status(401).json(ResponseManager.errorResponse("Unauthorized access."));
+    }
+  
+
+  
+    try {
+     const teachers=await Teachers.findAll()
+     return res.status(200).json(ResponseManager.successResponse({teachers},"Teachers fetched"))
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json(ResponseManager.errorResponse());
+    }
+  };
+  
+ 
+ module.exports={CreateTeacher,updateTeacherprofile,deleteTeacher,TeacherProfile,getTeachers,getteachercount,getTeacherslist}
