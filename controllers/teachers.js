@@ -115,13 +115,14 @@ const TeacherProfile = async (req, res) => {
     if(req?.user?.data?.role==="teacher")
      {
     const userId = req.user.data.id;
+    
     const userEmail = req.user.data.email;
     try {
       const user = await Users.findByPk(userId);
       if (!user) {
         return res.status(404).json(ResponseManager.errorResponse("User not found.", 404));
       }
-      const admin = await Teachers.findOne({ userId:user?.id});
+      const admin = await Teachers.findOne({ where:{userId}});
       if (!admin) {
         return res.status(404).json(ResponseManager.errorResponse("Teacher not found.", 404));
       }
