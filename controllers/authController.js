@@ -4,6 +4,8 @@ const { encryptText, compareText } = require("../helpers/encrptions");
 const { generateToken } = require("../helpers/jwttokens");
 const ResponseManager = require("../helpers/Message");
 const {mailusers}=require("../helpers/senEmail")
+const base64url = require('base64url');
+
 //create user route admin
 const CreateUser=async(req,res)=>{
    if(req?.user?.data?.admin)
@@ -66,8 +68,8 @@ const PasswordLinkSend = async (req, res) => {
         .status(404)
         .json(ResponseManager.errorResponse("User not found", 404));
     } else {
-        const token = generateToken({ id: user.id, email: user.email,admin:user.admin,role:user.role });
-        await mailusers(email,"Account Password Recovery",`Here is your Passowrd Reset Link.`,`<a href=${process.env.PASSURL}${token}>Confirm Your Account</a>`)
+        const token = base64url(generateToken({ id: user.id, email: user.email,admin:user.admin,role:user.role },"5m"));
+        await mailusers(email,"Account Password Recovery",`Here is your Passowrd Reset Link.`,`<a href=${process.env.PASSURL}${token}>Reset Password</a>`)
         return res.status(200).json(ResponseManager.successResponse({},"Password Recovery Mail sent")) 
       }
   } catch (error) {
@@ -154,7 +156,7 @@ else
 //reset User controller
 const resetUser = async (req, res) => {
   try {
-    const { email, password, profile } = req.body;
+    const { email, password, profile,devicetoken } = req.body;
     const userId = req.user.data.id;
     const user = await Users.findByPk(userId);
     if (!user) {
@@ -177,7 +179,10 @@ const resetUser = async (req, res) => {
       const newPass = await encryptText(password);
       user.password = newPass;
     }
-
+    if(devicetoken)
+    {
+      user.devicetoken=devicetoken
+    }
     // Save the changes to the database
     await user.save();
 
@@ -185,9 +190,38 @@ const resetUser = async (req, res) => {
       .status(200)
       .json(ResponseManager.successResponse({}, "User reset successful"));
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    return res.status(500).json(ResponseManager.errorResponse());
+  }
+};
+
+//update password
+const resetPassword = async (req, res) => {
+  try {
+    const { password } = req.body;
+    const userId = req.user.data.id;
+    const user = await Users.findByPk(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json(ResponseManager.errorResponse("User not found", 404));
+    }
+
+   
+    // Update the user's password if a new password is provided
+    if (password) {
+      const newPass = await encryptText(password);
+      user.password = newPass;
+    }
+    await user.save();
+
+    return res
+      .status(200)
+      .json(ResponseManager.successResponse({}, "Password reset successful"));
+  } catch (error) {
+    // console.error(error);
     return res.status(500).json(ResponseManager.errorResponse());
   }
 };
 //exports
-module.exports={CreateUser,loginUser,AdminProfile,updateadminprofile,resetUser,PasswordLinkSend}
+module.exports={CreateUser,loginUser,AdminProfile,updateadminprofile,resetUser,PasswordLinkSend,resetPassword}

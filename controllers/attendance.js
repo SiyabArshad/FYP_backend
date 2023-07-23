@@ -9,6 +9,7 @@ const Students=require("../models/Students")
 const Results=require("../models/Results")
 const Attendance=require("../models/Attendance")
 const { Op } = require('sequelize');
+const sendPushNotificationToDevice=require("../middlewares/pushnotification")
 //create attendance
 const createAttendance = async (req, res) => {
     if (req?.user?.data?.role === 'teacher') {
@@ -25,7 +26,12 @@ const createAttendance = async (req, res) => {
           await Attendance.update({ status }, { where: { id: attendance.id } });
           return res.status(200).json(ResponseManager.errorResponse("Attendance Updated",200));
         }
-  
+        const student=await Students.findOne({ where: { id: enrollment?.studentId } });
+        const classdata=await Classes.findOne({where:{id:enrollment?.classId}})
+        const userdata=await Users.findOne({where:{id:student.userId}})
+        const NotificationBody=`${student.name} your attendance mark as ${status} in ${classdata.classname} date ${date}`
+        const NotificationTitle="Attendance"
+        await sendPushNotificationToDevice(userdata?.devicetoken,NotificationTitle,NotificationBody)  
         // Create the attendance
         await Attendance.create({ enrollmentId, date, status });
         return res.status(200).json(ResponseManager.successResponse({},'Attendance created successfully' ));

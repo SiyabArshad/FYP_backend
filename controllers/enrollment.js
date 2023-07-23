@@ -8,6 +8,8 @@ const Classes=require("../models/Classes")
 const Students=require("../models/Students")
 const Results=require("../models/Results")
 const Attendance=require("../models/Attendance")
+const sendPushNotificationToDevice=require("../middlewares/pushnotification")
+
 const CreateEnrollment=async(req,res)=>{
     if(req?.user?.data?.role==='teacher')
     {
@@ -17,6 +19,12 @@ const CreateEnrollment=async(req,res)=>{
        if (alreadyexist) {
            return res.status(400).json(ResponseManager.errorResponse("Student Already Enrolled in this class.",400))
        } else {
+        const student=await Students.findOne({ where: { id: studentId } });
+        const classdata=await Classes.findOne({where:{id:classId}})
+        const userdata=await Users.findOne({where:{id:student.userId}})
+        const NotificationBody=`Hi ${student.name} you have been Enrolled in ${classdata.classname}`
+        const NotificationTitle="New Enrollment"
+        await sendPushNotificationToDevice(userdata?.devicetoken,NotificationTitle,NotificationBody)    
            await Enrollments.create({classId,studentId,status:true});
            return res.status(200).json(ResponseManager.successResponse({},"Student Has Been Enrolled SucessFully")) 
        }

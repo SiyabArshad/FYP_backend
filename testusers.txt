@@ -29,6 +29,7 @@ siyabarshadsatti99@gmail.com
 all test user have same password 123456
 
 #students
+exact4876@gmail.com
 ahmedhassan@gmail.com
 johndoe@gmail.com
 johndoe2@gmail.com

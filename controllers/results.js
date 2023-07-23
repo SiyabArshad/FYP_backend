@@ -7,13 +7,21 @@ const Teachers=require("../models/Teachers")
 const Classes=require("../models/Classes")
 const Students=require("../models/Students")
 const Results=require("../models/Results")
+const sendPushNotificationToDevice=require("../middlewares/pushnotification")
 
 const CreateResults=async(req,res)=>{
     if(req?.user?.data?.role==='teacher')
     {
      const {enrollmentId} = req.body;
      try {
-           await Results.create(req.body);
+      const enrollment = await Enrollments.findOne({ where: { id: enrollmentId } });
+      const student=await Students.findOne({ where: { id: enrollment?.studentId } });
+        const classdata=await Classes.findOne({where:{id:enrollment?.classId}})
+        const userdata=await Users.findOne({where:{id:student.userId}})
+        const NotificationBody=`Hi ${student.name} you have new Result in ${classdata.classname}`
+        const NotificationTitle="Result"
+        await sendPushNotificationToDevice(userdata?.devicetoken,NotificationTitle,NotificationBody)    
+      await Results.create(req.body);
            return res.status(200).json(ResponseManager.successResponse({},"Result Has Been Generated SucessFully")) 
   
      } catch (error) {
