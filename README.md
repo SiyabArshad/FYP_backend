@@ -18,5 +18,5 @@ The DigiSchool Backend serves as the central component of our digital school sys
 - Sequelize ORM for database interactions
 
 #### Contributors:
-- [Siyab Arshad]
-- [Ali Zahid]
+- Siyab Arshad
+- Ali Zahid
