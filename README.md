@@ -1,4 +1,4 @@
-### Project Title: DigiSchool Backend
+### DigiSchool Backend
 
 #### Description:
 The DigiSchool Backend serves as the central component of our digital school system project. It provides RESTful APIs consumed by both the mobile and web applications. This backend is built using Node.js and interacts with a PostgreSQL database to manage and retrieve school-related data.
